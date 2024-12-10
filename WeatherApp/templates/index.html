@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Information</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-5">Weather in {{ weather_data.location.name }}, {{ weather_data.location.country }}</h1>
+        
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        {% if weather_data %}
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Current Weather</h3>
+                    <p><strong>Temperature:</strong> {{ weather_data.current.temp_c }}°C ({{ weather_data.current.temp_f }}°F)</p>
+                    <p><strong>Condition:</strong> {{ weather_data.current.condition.text }}</p>
+                    <img src="https://cdn.weatherapi.com/weather/64x64/{{ weather_data.current.condition.icon }}" alt="{{ weather_data.current.condition.text }}">
+                    <p><strong>Feels like:</strong> {{ weather_data.current.feelslike_c }}°C ({{ weather_data.current.feelslike_f }}°F)</p>
+                    <p><strong>Wind:</strong> {{ weather_data.current.wind_mph }} mph ({{ weather_data.current.wind_kph }} kph) from the {{ weather_data.current.wind_dir }}</p>
+                    <p><strong>Humidity:</strong> {{ weather_data.current.humidity }}%</p>
+                    <p><strong>Pressure:</strong> {{ weather_data.current.pressure_mb }} mb ({{ weather_data.current.pressure_in }} in)</p>
+                </div>
+                <div class="col-md-6">
+                    <h3>Additional Info</h3>
+                    <p><strong>Wind Chill:</strong> {{ weather_data.current.windchill_c }}°C ({{ weather_data.current.windchill_f }}°F)</p>
+                    <p><strong>Heat Index:</strong> {{ weather_data.current.heatindex_c }}°C ({{ weather_data.current.heatindex_f }}°F)</p>
+                    <p><strong>Dew Point:</strong> {{ weather_data.current.dewpoint_c }}°C ({{ weather_data.current.dewpoint_f }}°F)</p>
+                    <p><strong>Visibility:</strong> {{ weather_data.current.vis_km }} km ({{ weather_data.current.vis_miles }} miles)</p>
+                    <p><strong>UV Index:</strong> {{ weather_data.current.uv }}</p>
+                    <p><strong>Gust:</strong> {{ weather_data.current.gust_mph }} mph ({{ weather_data.current.gust_kph }} kph)</p>
+                </div>
+            </div>
+        {% endif %}
+
+        <form method="post" class="mt-5">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Enter city name" name="city" required>
+                <button class="btn btn-primary" type="submit">Get Weather</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
